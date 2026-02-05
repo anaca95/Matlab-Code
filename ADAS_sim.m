@@ -13,7 +13,7 @@ rows_keep_speed = t1.ADAS_output == "Maintain Speed";
 acc = t1(rows_acc,:);
 brk = t1(rows_brk,:);
 lane_corr = t1(rows_lane_corr,:);
-keep_speed = t1(rows_keep_speed,:);
+keep_speed = t1(rows_keep_speed,2);
 
 
 
@@ -71,3 +71,62 @@ b(idx3b) = 0.5 * abs(sin(pi*(t(idx3b)-10)/10));
 time_brk = timeseries(b, t);
 
 
+%%
+speed = t1.speed_kmh;
+acc_status = zeros(size(t1, 1), 1);
+for i = 1 : size(t1, 1)
+    if i == 1 && t1.ADAS_output(i) == "Accelerate"
+        acc_status(i) = 1;
+    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 0
+        acc_status(i) = 1;
+    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 1
+        acc_status(i) = 2;
+    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 2
+        acc_status(i) = 3;
+    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 3
+        acc_status(i) = 4;
+    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 4
+        acc_status(i) = 5;
+    end
+end
+
+
+% brake
+brk_status = zeros(size(t1, 1), 1);
+for i = 1 : size(t1, 1)
+    if i == 1 && t1.ADAS_output(i) == "Brake"
+        brk_status(i) = 1;
+    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 0
+        brk_status(i) = 1;
+    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 1
+        brk_status(i) = 2;
+    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 2
+        brk_status(i) = 3;
+    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 3
+        brk_status(i) = 4;
+    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 4
+        brk_status(i) = 5;
+    end
+end
+%% Add columns to the table
+t1.("acc_status") = acc_status;
+t1.("brk_status") = brk_status;
+%% Plot the impact of accelerating and braking Vs. speed
+tiledlayout(2, 1)
+nexttile
+scatter(acc_status,speed, 10,'magenta');
+xlabel("Acceleration Status");
+ylabel("Speed")
+title("Speed behavior after accelerating")
+grid on
+nexttile
+scatter(brk_status, speed, 10, 'red');
+xlabel("Brake Status");
+ylabel("Speed")
+title("Speed behavior after braking")
+grid on
+
+%%
+for i = 1: size(k)
+    idx(i) = i;
+end
