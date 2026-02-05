@@ -77,17 +77,12 @@ acc_status = zeros(size(t1, 1), 1);
 for i = 1 : size(t1, 1)
     if i == 1 && t1.ADAS_output(i) == "Accelerate"
         acc_status(i) = 1;
-    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 0
+    elseif i == 1 && t1.ADAS_output(i) ~= "Accelerate"
         acc_status(i) = 1;
-    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 1
-        acc_status(i) = 2;
-    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 2
-        acc_status(i) = 3;
-    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 3
-        acc_status(i) = 4;
-    elseif t1.ADAS_output(i) == "Accelerate" && acc_status(i-1) == 4
-        acc_status(i) = 5;
+    elseif t1.speed_kmh(i) > t1.speed_kmh(i-1)
+        acc_status(i) = acc_status(i-1) + 1;
     end
+    
 end
 
 
@@ -96,16 +91,11 @@ brk_status = zeros(size(t1, 1), 1);
 for i = 1 : size(t1, 1)
     if i == 1 && t1.ADAS_output(i) == "Brake"
         brk_status(i) = 1;
-    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 0
-        brk_status(i) = 1;
-    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 1
-        brk_status(i) = 2;
-    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 2
-        brk_status(i) = 3;
-    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 3
-        brk_status(i) = 4;
-    elseif t1.ADAS_output(i) == "Brake" && brk_status(i-1) == 4
-        brk_status(i) = 5;
+    elseif i == 1 && t1.ADAS_output(i) ~= "Brake"
+        brk_status(i) = 0;
+    elseif t1.speed_kmh(i) < t1.speed_kmh(i-1)
+        brk_status(i) = brk_status(i-1) + 1;
+    
     end
 end
 %% Add columns to the table
