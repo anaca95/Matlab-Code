@@ -116,7 +116,131 @@ ylabel("Speed")
 title("Speed behavior after braking")
 grid on
 
-%%
-for i = 1: size(k)
+%% Generate synthetic samples
+
+for i = 1: length(t1.speed_kmh)
     idx(i) = i;
 end
+
+
+% Speed
+lower_lim = min(t1.speed_kmh);
+higher_lim = max(t1.speed_kmh);
+pd = fitdist(t1.speed_kmh,'Normal');    % estimate parameters
+synthetic_speed = random(pd,10000,1);
+synthetic_speed = synthetic_speed(synthetic_speed >= lower_lim & synthetic_speed <= higher_lim);
+figure
+histogram(t1.speed_kmh)
+hold on
+histogram(synthetic_speed)
+hold off
+legend(["Original Speed", "Synthetic"])
+
+
+% Battery level
+lower_lim = min(t1.battery_level);
+higher_lim = max(t1.battery_level);
+pd = fitdist(t1.battery_level,'Normal');    % estimate parameters
+synthetic_bat = random(pd,10000,1);
+synthetic_bat = synthetic_bat(synthetic_bat >= lower_lim & synthetic_bat <= higher_lim);
+figure
+histogram(t1.battery_level)
+hold on
+histogram(synthetic_bat)
+hold off
+legend(["Original battery level", "Synthetic"])
+
+
+% Energy consumption
+lower_lim = min(t1.energy_consumption);
+higher_lim = max(t1.energy_consumption);
+pd = fitdist(t1.energy_consumption,'Normal');    % estimate parameters
+synthetic_ener = random(pd,10000,1);
+synthetic_ener = synthetic_ener(synthetic_ener >= lower_lim & synthetic_ener <= higher_lim);
+figure
+histogram(t1.energy_consumption)
+hold on
+histogram(synthetic_ener)
+hold off
+legend(["Original energy consumption", "Synthetic"])
+
+
+% Regen braking usage
+lower_lim = min(t1.regen_braking_usage);
+higher_lim = max(t1.regen_braking_usage);
+pd = fitdist(t1.regen_braking_usage,'Normal');    % estimate parameters
+synthetic_rbk = random(pd,10000,1);
+synthetic_rbk = synthetic_rbk(synthetic_rbk >= lower_lim & synthetic_rbk <= higher_lim);
+figure
+histogram(t1.regen_braking_usage)
+hold on
+histogram(synthetic_rbk)
+hold off
+legend(["Original regenative brake", "Synthetic"])
+
+% Lane deviation
+lower_lim = min(t1.lane_deviation);
+higher_lim = max(t1.lane_deviation);
+pd = fitdist(t1.lane_deviation,'Normal');
+synthetic_lkp = random(pd,10000,1);
+synthetic_lkp = synthetic_lkp(synthetic_lkp >= lower_lim & synthetic_lkp <= higher_lim);
+figure
+histogram(t1.lane_deviation)
+hold on
+histogram(synthetic_lkp)
+hold off
+legend(["Original lane deviation", "Synthetic"])
+
+% Obstacle distance
+lower_lim = min(t1.obstacle_distance);
+higher_lim = max(t1.obstacle_distance);
+pd = fitdist(t1.obstacle_distance,'Normal');
+synthetic_obs = random(pd,10000,1);
+synthetic_obs = synthetic_obs(synthetic_obs >= lower_lim & synthetic_obs <= higher_lim);
+figure
+histogram(t1.obstacle_distance)
+hold on
+histogram(synthetic_obs)
+hold off
+legend(["Original obstacle distance", "Synthetic"])
+
+% Traffic density
+lower_lim = min(t1.traffic_density);
+higher_lim = max(t1.traffic_density);
+pd = fitdist(t1.traffic_density,'Normal');
+synthetic_trf = random(pd,10000,1);
+synthetic_trf = synthetic_trf(synthetic_trf >= lower_lim & synthetic_trf <= higher_lim);
+figure
+histogram(t1.traffic_density)
+hold on
+histogram(synthetic_trf)
+hold off
+legend(["Original traffic density", "Synthetic"])
+
+% Steering angle
+lower_lim = min(t1.steering_angle);
+higher_lim = max(t1.steering_angle);
+pd = fitdist(t1.steering_angle,'Normal');
+synthetic_ste = random(pd,10000,1);
+synthetic_ste = synthetic_ste(synthetic_ste >= lower_lim & synthetic_ste <= higher_lim);
+figure
+histogram(t1.steering_angle)
+hold on
+histogram(synthetic_ste)
+hold off
+legend(["Original steering angle", "Synthetic"])
+
+
+% Reaction time
+lower_lim = min(t1.reaction_time);
+higher_lim = max(t1.reaction_time);
+pd = fitdist(t1.reaction_time,'Normal');
+synthetic_rea = random(pd,10000,1);
+synthetic_rea = synthetic_rea(synthetic_rea >= lower_lim & synthetic_rea <= higher_lim);
+figure
+histogram(t1.reaction_time)
+hold on
+histogram(synthetic_rea)
+hold off
+legend(["Original reaction time", "Synthetic"])
+
